@@ -10,3 +10,66 @@
 //Rated Burn Time: 480 seconds in initial configuration
 //Fuel/Oxidizer Ratio: 1.86
 //Cost: Twice that of a normal LR-91
+@PART[*]:HAS[#engineType[ELE2]]:FOR[RealismOverhaulEngines]
+{
+        @title = ELE Series
+        %manufacturer = Crash Industries Astrodynamics
+        @description = Experimental Landing Engine series developed by Crash Industries for it's interplanetary base development projects. Derived from Aerojet LR-91 engines.
+        
+        MODULE
+        {
+                name = ModuleEngineConfigs
+                type = ModuleEngines
+                configuration = ELE2
+                origMass = .75
+                modded = false
+                CONFIG
+                {
+                        name = ELEv1
+                        minThrust = 118.425
+                        maxThrust = 473.7
+                        heatProduction = 86
+                        PROPELLANT
+                        {
+                                name = Aerozine50
+                                ratio = 0.463
+                                DrawGauge = True
+                        }
+                        PROPELLANT
+                        {
+                                name = NTO
+                                ratio = 0.537
+                        }
+                        atmosphereCurve
+                        {
+                                key = 0 320
+                                key = 1 180
+                        }
+                        %ullage = True
+                        %pressureFed = False
+                        %ignitions = 60 //don't you just love slipping clutches?
+                        IGNITOR_RESOURCE
+                        {
+                                name = ElectricCharge
+                                amount = 1.2
+                        }
+       }
+       @MODULE[ModuleGimbal]
+       {
+       @gimbalRange = 7.5
+       %useGimbalResponseSpeed = true
+       %gimbalResponseSpeed = 16
+       }
+}
+@PART[*]:HAS[@MODULE[ModuleEngineConfigs]:HAS[@CONFIG[ELEv1]],!MODULE[TestFlightInterop]]:BEFORE[zTestFlight]
+{
+        TESTFLIGHT
+        {
+                name = ELEv1
+                ratedBurnTime = 480
+                ignitionReliabilityStart = 0.9
+                ignitionReliabilityEnd = 0.95
+                cycleReliabilityStart = 0.93
+                cycleReliabilityEnd = 0.983
+        }
+}
